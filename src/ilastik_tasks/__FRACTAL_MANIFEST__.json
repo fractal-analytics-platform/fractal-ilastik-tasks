@@ -2,7 +2,7 @@
   "manifest_version": "2",
   "task_list": [
     {
-      "name": "Thresholding Label Task",
+      "name": "Ilastik Pixel Classification Segmentation",
       "executable_parallel": "ilastik_pixel_classification_segmentation.py",
       "meta_parallel": {
         "cpus_per_task": 8,
