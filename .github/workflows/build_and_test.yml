@@ -12,26 +12,22 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-22.04, macos-latest]
-        python-version: ["3.9", "3.10", "3.11"]
-        exclude:
-          - os: macos-latest
-            python-version: '3.9'
-          - os: macos-latest
-            python-version: '3.10'
+        python-version: ["3.9"]
     name: "Core, Python ${{ matrix.python-version }}, ${{ matrix.os }}"
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: mamba-org/setup-micromamba@v1
         with:
-          fetch-depth: 1
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: "pip"
+          micromamba-version: '1.5.6-0' # any version from https://github.com/mamba-org/micromamba-releases
+          environment-name: 'ilastik-tasks'
+          create-args: >-
+            --override-channels
+            -c pytorch
+            -c ilastik-forge 
+            -c conda-forge python=${{ matrix.python-version }} ilastik 
+            --no-channel-priority
 
       - name: Install package
         run: python -m pip install -e .[dev]
