@@ -70,8 +70,8 @@ def seutp_ilastik(model_path: str):
 def segment_ROI(
     input_data: np.ndarray,
     shell: Any,
-    threshold: float = 0.4,
-    min_size: int = 15,
+    threshold: int = 10000,
+    min_size: int = 3,
 ) -> np.ndarray:
     """Run the Ilastik model on a single ROI.
 
@@ -150,8 +150,8 @@ def ilastik_pixel_classification_segmentation(
     output_ROI_table: Optional[str] = None,
     output_label_name: Optional[str] = None,
     # Cellpose-related arguments
-    threshold: float = 0.4,
-    min_size: int = 15,
+    threshold: int = 10000,
+    min_size: int = 3,
     use_masks: bool = True,
     overwrite: bool = True,
 ) -> None:
