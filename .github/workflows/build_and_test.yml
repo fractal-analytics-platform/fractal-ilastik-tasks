@@ -18,6 +18,10 @@ jobs:
     timeout-minutes: 10
 
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          
       - uses: mamba-org/setup-micromamba@v1
         with:
           micromamba-version: '1.5.6-0' # any version from https://github.com/mamba-org/micromamba-releases
