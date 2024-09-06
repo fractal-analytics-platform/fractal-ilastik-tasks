@@ -5,7 +5,9 @@ import pytest
 from devtools import debug
 from fractal_tasks_core.channels import ChannelInputModel
 
-from ilastik_tasks.thresholding_label_task import thresholding_label_task
+from ilastik_tasks.ilastik_pixel_classification_segmentation import (
+    thresholding_label_task,
+)
 
 
 @pytest.fixture(scope="function")
@@ -22,7 +24,5 @@ def test_data_dir(tmp_path: Path) -> str:
 
 def test_thresholding_label_task(test_data_dir):
     thresholding_label_task(
-        zarr_url=test_data_dir,
-        threshold=180,
-        channel=ChannelInputModel(label="DAPI")
+        zarr_url=test_data_dir, threshold=180, channel=ChannelInputModel(label="DAPI")
     )
