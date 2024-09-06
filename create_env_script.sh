@@ -1,4 +1,4 @@
-VERSION="v0.1.1"
+VERSION="0.1.1"
 COMMMAND="mamba"
 # If ENVPREFIX is not NULL, the environment will be created with the prefix $ENVPREFIX/$ENVNAME 
 # If ENVPREFIX is NULL, the environment will be created in the default location
