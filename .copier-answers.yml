@@ -1,0 +1,10 @@
+# Do not edit - changes here will be overwritten by Copier
+_commit: 0.4.0
+_src_path: gh:fractal-analytics-platform/fractal-tasks-template
+author_email: lorenzo.cerrone@uzh.ch
+author_name: Lorenzo Cerrone
+package_name: ilastik_tasks
+project_name: ilastik-tasks
+project_short_description: Package description.
+project_url: ''
+
