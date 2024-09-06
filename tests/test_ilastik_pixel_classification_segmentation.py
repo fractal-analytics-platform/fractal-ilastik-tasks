@@ -26,7 +26,9 @@ def test_ilastik_pixel_classification_segmentation_task(test_data_dir):
     """
     Test the ilastik_pixel_classification_segmentation task.
     """
+    test_data_dir = (Path(__file__).parent / "data/ngff_example/my_image").as_posix()
     ilastik_model = (Path(__file__).parent / "data/pixel_classifier_2D.ilp").as_posix()
+    # assert False, test_data_dir
 
     ilastik_pixel_classification_segmentation(
         zarr_url=test_data_dir,
