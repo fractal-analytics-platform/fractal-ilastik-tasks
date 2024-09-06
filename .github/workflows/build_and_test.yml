@@ -33,17 +33,13 @@ jobs:
             -c conda-forge python=${{ matrix.python-version }} ilastik 
             --no-channel-priority
 
-          init-shell: >-
-            bash
-            
-          cache-environment: true
           post-cleanup: 'all'
 
       - name: Install package
-        run: python -m pip install -e .[dev]
+        run: micromamba run -n ilastik-tasks python -m pip install -e .[dev]
 
       - name: Regenerate the manifest
-        run: python src/ilastik_tasks/dev/create_manifest.py
+        run: micromamba run -n ilastik-tasks python src/ilastik_tasks/dev/create_manifest.py
 
       - name: Check if manifest has changed
         run: |
@@ -55,4 +51,4 @@ jobs:
           fi
 
       - name: Test core library with pytest
-        run: python -m pytest tests
+        run: micromamba run -n ilastik-tasks python -m pytest tests
