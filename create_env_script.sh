@@ -20,7 +20,7 @@ $COMMMAND run $COMMMAND create $LOCATION \
                                -c pytorch \
                                -c ilastik-forge \
                                -c conda-forge $PYTHON ilastik \
-                               --no-channel-priority
+                               --no-channel-priority --yes
 
 echo "Installing plantseg-tasks version $VERSION"
 $COMMMAND run --name $ENVNAME pip install git+https://github.com/fractal-analytics-platform/fractal-ilastik-tasks@$VERSION
