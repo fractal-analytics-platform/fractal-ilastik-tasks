@@ -2,11 +2,14 @@ name: CI (build and test)
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
     tags:
       - "*"
   pull_request:
-    branches: ["main"]
+  workflow_dispatch:
+  release:
+    types: [published]
 
 
 jobs:

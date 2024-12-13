@@ -104,7 +104,8 @@
         "type": "object",
         "title": "IlastikPixelClassificationSegmentation"
       },
-      "docs_info": "## ilastik_pixel_classification_segmentation\nRun Ilastik Pixel Classification on a Zarr image.\n"
+      "docs_info": "## ilastik_pixel_classification_segmentation\nRun Ilastik Pixel Classification on a Zarr image.\n",
+      "docs_link": "https://github.com/fractal-analytics-platform/fractal-ilastik-tasks"
     }
   ],
   "has_args_schemas": true,
