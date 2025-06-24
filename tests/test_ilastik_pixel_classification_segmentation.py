@@ -26,7 +26,7 @@ def test_data_dir_3d(tmp_path: Path, zenodo_zarr_3d: list) -> str:
     return dest_dir
 
 
-def test_ilastik_pixel_classification_segmentation_task_3D(test_data_dir_3d):
+def test_ilastik_pixel_classification_segmentation_task_3D_dualchannel(test_data_dir_3d):
     """
     Test the 3D ilastik_pixel_classification_segmentation task with dual channel input.
     """
@@ -52,9 +52,6 @@ def test_ilastik_pixel_classification_segmentation_task_3D(test_data_dir_3d):
             zarr_url=zarr_url,
             level=4,
             channel=IlastikChannel1InputModel(label="DAPI_2"),
-            channel2=None,
             ilastik_model=str(ilastik_model),
             output_label_name="test_label_single_channel",
         )
-
-

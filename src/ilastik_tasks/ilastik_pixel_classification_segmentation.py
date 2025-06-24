@@ -254,14 +254,14 @@ def ilastik_pixel_classification_segmentation(
 
     # Check model channel requirements
     expected_channels = check_ilastik_model_channels(shell)
-    if expected_channels == 2 and channel2 is None:
+    if expected_channels == 2 and not channel2.is_set():
         raise ValueError(
             "Ilastik model expects two channels as "
             "input but only one channel was provided"
         )
-    elif expected_channels == 1 and channel2 is not None:
+    elif expected_channels == 1 and channel2.is_set():
         raise ValueError(
-            "Ilastik model expects 1 channel as " "input but two channels were provided"
+            "Ilastik model expects 1 channel as input but two channels were provided"
         )
 
     # Find channel index
@@ -290,7 +290,7 @@ def ilastik_pixel_classification_segmentation(
     # Load ZYX data
     data_zyx = da.from_zarr(f"{zarr_url}/{level}")[ind_channel]
     logger.info(f"{data_zyx.shape=}")
-    if channel2:
+    if channel2.is_set():
         data_zyx_c2 = da.from_zarr(f"{zarr_url}/{level}")[ind_channel_c2]
         logger.info(f"Second channel: {data_zyx_c2.shape=}")
 
@@ -437,7 +437,7 @@ def ilastik_pixel_classification_segmentation(
         logger.info(f"Now processing ROI {i_ROI+1}/{num_ROIs}")
 
         # Prepare single-channel or dual-channel input for Ilastik
-        if channel2:
+        if channel2.is_set():
             # Dual channel mode
             img_1 = load_region(
                 data_zyx,
