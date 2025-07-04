@@ -25,4 +25,4 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: python3 .github/scripts/verify_pyproject_fractal.py
+      - run: python3 .github/scripts/verify_pyproject_fractal.py
