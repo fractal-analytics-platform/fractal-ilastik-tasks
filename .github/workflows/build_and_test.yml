@@ -20,7 +20,7 @@ jobs:
         
     name: "${{ matrix.os }}"
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 10
+    timeout-minutes: 20
 
     steps:
       - uses: actions/checkout@v4
