@@ -1,0 +1,28 @@
+name: Check pyproject.toml
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "*"
+  pull_request:
+
+
+jobs:
+  check-pyproject:
+        
+    name: "Check pyproject"
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: python3 .github/scripts/verify_pyproject_fractal.py
