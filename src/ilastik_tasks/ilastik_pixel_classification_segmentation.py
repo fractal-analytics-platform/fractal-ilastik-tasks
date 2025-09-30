@@ -23,6 +23,7 @@ Ilastik adaptation by:
 import json
 import logging
 import os
+import time
 from typing import Any, Optional
 
 import anndata as ad
@@ -176,6 +177,33 @@ def segment_ROI(
 
     return ilastik_labels.astype(label_dtype)
 
+def setup_ilastik_with_retries(ilastik_model: str):
+    """
+    Setup Ilastik headless shell with retries to avoid initialization issues.
+    
+    See #17 for context
+    
+    """
+    max_retries = 5
+    current_round = 0
+    while current_round < max_retries:
+        try:
+            shell = setup_ilastik(ilastik_model)
+            return shell
+        except FileNotFoundError:
+            current_round += 1
+            logger.warning(
+                f"Ilastik initialization failed, retrying {current_round=}/"
+                f"{max_retries}"
+            )
+            sleep_time = 2 ** (current_round + 1)
+            time.sleep(sleep_time)
+    
+    raise FileNotFoundError(
+        f"Ilastik initialization failed for model {ilastik_model} after "
+        f"{max_retries}retries."
+    )
+
 
 @validate_call
 def ilastik_pixel_classification_segmentation(
@@ -254,7 +282,7 @@ def ilastik_pixel_classification_segmentation(
     )
 
     # Setup Ilastik headless shell
-    shell = setup_ilastik(ilastik_model)
+    shell = setup_ilastik_with_retries(ilastik_model)
 
     # Check if channel input fits expected number of channels of model
     expected_num_channels = get_expected_number_of_channels(shell)
