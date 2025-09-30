@@ -65,7 +65,7 @@ dev = [
 # https://docs.astral.sh/ruff
 [tool.ruff]
 line-length = 88
-target-version = "py311"
+target-version = "py39"
 src = ["src"]
 
 # https://docs.astral.sh/ruff/rules
@@ -89,6 +89,7 @@ select = [
 ignore = [
     "D401", # First line should be in imperative mood (remove to opt in)
     "D415", # First line should end with a period (remove to opt in)
+    "B008",
 ]
 
 [tool.ruff.lint.per-file-ignores]

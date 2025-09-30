@@ -12,8 +12,6 @@ from ilastik_tasks.ilastik_utils import (
     IlastikChannel2InputModel,
 )
 
-# TODO: add 2D testdata
-
 
 @pytest.fixture(scope="function")
 def ome_zarr_3d_url(tmp_path: Path, testdata_path: Path) -> str:
@@ -80,7 +78,9 @@ def test_ilastik_pixel_classification_segmentation_task_3D_single_channel(
         channel=IlastikChannel1InputModel(label="DAPI_2"),
         channel2=IlastikChannel2InputModel(label=None),
         ilastik_model=str(ilastik_model),
+        input_ROI_table="well_ROI_table",
         output_label_name="test_label",
+        output_ROI_table="test_ROI_table",
         relabeling=True,
     )
 
@@ -93,6 +93,7 @@ def test_ilastik_pixel_classification_segmentation_task_3D_single_channel(
             channel=IlastikChannel1InputModel(label="DAPI_2"),
             channel2=IlastikChannel2InputModel(label="ECadherin_2"),
             ilastik_model=str(ilastik_model),
+            input_ROI_table="well_ROI_table",
             output_label_name="test_label",
             relabeling=True,
         )
@@ -130,6 +131,7 @@ def test_ilastik_pixel_classification_segmentation_task_2D_single_channel(
         channel2=IlastikChannel2InputModel(label=None),
         ilastik_model=str(ilastik_model),
         output_label_name="test_label",
+        output_ROI_table="test_ROI_table",
         relabeling=True,
     )
 
