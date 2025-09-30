@@ -504,8 +504,22 @@ def ilastik_pixel_classification_segmentation(
         )
 
         # Make 3D in case of 2D data
-        if len(new_label_img.shape) == 2:
-            new_label_img = np.expand_dims(new_label_img, axis=0)
+        # Check that the shape of the new label image matches the expected shape
+        expected_shape = (
+            e_z - s_z,
+            e_y - s_y,
+            e_x - s_x,
+        )
+        logger.info(f"Expected shape: {expected_shape}")
+        if new_label_img.shape != expected_shape:
+            try:
+                new_label_img = np.broadcast_to(new_label_img, expected_shape)
+            except Exception as err:
+                raise ValueError(
+                    f"Shape mismatch: {new_label_img.shape} != {expected_shape} "
+                    "Between the segmented label image and expected shape in "
+                    "the zarr array."
+                ) from err
 
         if output_ROI_table:
             bbox_df = array_to_bounding_box_table(
@@ -522,23 +536,6 @@ def ilastik_pixel_classification_segmentation(
                     f"ROI {indices} has "
                     f"{len(overlap_list)} bounding-box pairs overlap"
                 )
-
-        # Check that the shape of the new label image matches the expected shape
-        expected_shape = (
-            e_z - s_z,
-            e_y - s_y,
-            e_x - s_x,
-        )
-        logger.info(f"Expected shape: {expected_shape}")
-        if new_label_img.shape != expected_shape:
-            try:
-                new_label_img = da.broadcast_to(new_label_img, expected_shape)
-            except Exception as err:
-                raise ValueError(
-                    f"Shape mismatch: {new_label_img.shape} != {expected_shape} "
-                    "Between the segmented label image and expected shape in "
-                    "the zarr array."
-                ) from err
 
         # Compute and store 0-th level to disk
         da.array(new_label_img).to_zarr(
