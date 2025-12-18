@@ -88,6 +88,8 @@ def segmentation_function(
         }
     ]
 
+    # Had to move Shell setup here to avoid cache build-up that lead to strange failures
+    # on larger datasets
     shell = setup_ilastik_with_retries(ilastik_model)
     shell.workflow.trainable = False
     logging.info(f"Training allowed: {getattr(shell.workflow, 'trainable', 'unknown')}")
