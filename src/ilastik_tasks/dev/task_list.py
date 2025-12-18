@@ -2,7 +2,7 @@
 
 from fractal_task_tools.task_models import ParallelTask
 
-AUTHORS = "Lorenzo Cerrone"
+AUTHORS = ["Lorenzo Cerrone", "Ruth Hornbachner"]
 DOCS_LINK = "https://github.com/fractal-analytics-platform/fractal-ilastik-tasks"
 
 INPUT_MODELS = [
