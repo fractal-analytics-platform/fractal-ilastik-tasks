@@ -22,17 +22,20 @@
               "foreground_class": {
                 "default": 0,
                 "title": "Foreground Class",
-                "type": "integer"
+                "type": "integer",
+                "description": "Class to be considered as foreground during prediction thresholding. Defaults to 0."
               },
               "threshold": {
                 "default": 0.0,
                 "title": "Threshold",
-                "type": "number"
+                "type": "number",
+                "description": "all pixels with value above threshold kept for masks, decrease to find more and larger masks. Defaults to 0.0."
               },
               "min_size": {
                 "default": 15,
                 "title": "Min Size",
-                "type": "integer"
+                "type": "integer",
+                "description": "all ROIs below this size, in pixels, will be discarded. Defaults to 15."
               }
             },
             "title": "AdvancedIlastikParameters",
@@ -49,7 +52,8 @@
                   "index"
                 ],
                 "title": "Mode",
-                "type": "string"
+                "type": "string",
+                "description": "Specifies how to interpret the identifier. Can be \"label\", \"wavelength_id\", or \"index\" (must be an integer). At least one and at most three identifiers must be provided."
               },
               "identifiers": {
                 "items": {
@@ -58,7 +62,8 @@
                 "maxItems": 3,
                 "minItems": 1,
                 "title": "Identifiers",
-                "type": "array"
+                "type": "array",
+                "description": "Unique identifier for the channel. This can be a channel label, wavelength ID, or index."
               }
             },
             "title": "IlastikChannels",
@@ -73,11 +78,13 @@
                     "$ref": "#/$defs/MaskingConfiguration"
                   }
                 ],
-                "title": "Masking Iterator Configuration"
+                "title": "Masking Iterator Configuration",
+                "description": "If set, the segmentation will be performed only within the confines of the specified mask. A mask can be specified either by a label image or a Masking ROI table."
               },
               "roi_table": {
                 "title": "Iterate Over ROIs",
-                "type": "string"
+                "type": "string",
+                "description": "Name of a ROI table. If set, the segmentation will be applied to each ROI in the table individually. This option can be combined with masking."
               }
             },
             "title": "IteratorConfiguration",
@@ -93,11 +100,13 @@
                   "Label Name"
                 ],
                 "title": "Mode",
-                "type": "string"
+                "type": "string",
+                "description": "Mode of masking to be applied. If \"Table Name\", the identifier refers to a masking table name. If \"Label Name\", the identifier refers to a label image name."
               },
               "identifier": {
                 "title": "Identifier",
-                "type": "string"
+                "type": "string",
+                "description": "Name of the masking table or label image depending on the mode."
               }
             },
             "title": "MaskingConfiguration",
