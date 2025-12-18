@@ -112,12 +112,32 @@ ilastik-tasks = { path = ".", editable = true }
 default = { solve-group = "default" }
 dev = { features = ["dev"], solve-group = "default" }
 
-[tool.pixi.tasks]
-
 [tool.pixi.dependencies]
 pydantic = "==2.8.2"
 docstring_parser = "==0.15"
 ilastik-core = ">=1.4.2a1,<2"
 vigra = ">=1.12.1,<2"
-fractal-tasks-core = "==1.5.3"
-fractal-task-tools = "==0.0.12"
+ngio = ">=0.4.1,<0.5"
+fractal-task-tools = ">=0.0.14"
+
+[tool.pixi.tasks]
+install-pre-commit = { cmd = ["pre-commit", "install"] }
+format-imports = { cmd = ["ruff", "check", "--select", "I", "--fix"] }
+format-code = { cmd = ["ruff", "format", "."] }
+
+create-manifest = { cmd = [
+    "fractal-manifest",
+    "create",
+    "--package",
+    "ilastik-tasks",
+] }
+
+test = { cmd = ["pytest", "./tests/"] }
+
+init-tasks = [
+    { task = "install-pre-commit", environment = "dev" },
+    { task = "format-code", environment = "dev" },
+    { task = "format-imports", environment = "dev" },
+    { task = "create-manifest", environment = "dev" },
+    { task = "test", environment = "dev" },
+]

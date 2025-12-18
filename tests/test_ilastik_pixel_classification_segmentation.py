@@ -8,8 +8,9 @@ from ilastik_tasks.ilastik_pixel_classification_segmentation import (
     ilastik_pixel_classification_segmentation,
 )
 from ilastik_tasks.ilastik_utils import (
-    IlastikChannel1InputModel,
-    IlastikChannel2InputModel,
+    AdvancedIlastikParameters,
+    IlastikChannels,
+    IteratorConfiguration,
 )
 
 
@@ -39,12 +40,16 @@ def test_ilastik_pixel_classification_segmentation_task_3D_dual_channel(
 
     ilastik_pixel_classification_segmentation(
         zarr_url=ome_zarr_3d_url,
-        level=0,
-        channel=IlastikChannel1InputModel(label="DAPI_2"),
-        channel2=IlastikChannel2InputModel(label="ECadherin_2"),
+        channels=IlastikChannels(mode="label", identifiers=["DAPI_2", "ECadherin_2"]),
+        iterator_configuration=IteratorConfiguration(roi_table="FOV_ROI_table"),
         ilastik_model=str(ilastik_model),
-        output_label_name="test_label",
-        relabeling=True,
+        label_name="test_label",
+        level_path="0",
+        advanced_parameters=AdvancedIlastikParameters(
+            foreground_class=0,
+            threshold=0.5,
+            min_size=15,
+        ),
     )
 
     # Test failing of task if model was trained with two channels
@@ -52,12 +57,16 @@ def test_ilastik_pixel_classification_segmentation_task_3D_dual_channel(
     with pytest.raises(ValueError):
         ilastik_pixel_classification_segmentation(
             zarr_url=ome_zarr_3d_url,
-            level=0,
-            channel=IlastikChannel1InputModel(label="DAPI_2"),
-            channel2=IlastikChannel2InputModel(label=None),
+            channels=IlastikChannels(mode="label", identifiers=["DAPI_2"]),
+            iterator_configuration=IteratorConfiguration(roi_table="FOV_ROI_table"),
             ilastik_model=str(ilastik_model),
-            output_label_name="test_label",
-            relabeling=True,
+            label_name="test_label",
+            level_path="0",
+            advanced_parameters=AdvancedIlastikParameters(
+                foreground_class=0,
+                threshold=0.5,
+                min_size=15,
+            ),
         )
 
 
@@ -74,14 +83,16 @@ def test_ilastik_pixel_classification_segmentation_task_3D_single_channel(
 
     ilastik_pixel_classification_segmentation(
         zarr_url=ome_zarr_3d_url,
-        level=0,
-        channel=IlastikChannel1InputModel(label="DAPI_2"),
-        channel2=IlastikChannel2InputModel(label=None),
+        channels=IlastikChannels(mode="label", identifiers=["DAPI_2"]),
+        iterator_configuration=IteratorConfiguration(roi_table="well_ROI_table"),
         ilastik_model=str(ilastik_model),
-        input_ROI_table="well_ROI_table",
-        output_label_name="test_label",
-        output_ROI_table="test_ROI_table",
-        relabeling=True,
+        label_name="test_label",
+        level_path="0",
+        advanced_parameters=AdvancedIlastikParameters(
+            foreground_class=0,
+            threshold=0.5,
+            min_size=15,
+        ),
     )
 
     # Test failing of task if model was trained with one channel
@@ -89,13 +100,18 @@ def test_ilastik_pixel_classification_segmentation_task_3D_single_channel(
     with pytest.raises(ValueError):
         ilastik_pixel_classification_segmentation(
             zarr_url=ome_zarr_3d_url,
-            level=0,
-            channel=IlastikChannel1InputModel(label="DAPI_2"),
-            channel2=IlastikChannel2InputModel(label="ECadherin_2"),
+            channels=IlastikChannels(
+                mode="label", identifiers=["DAPI_2", "ECadherin_2"]
+            ),
+            iterator_configuration=IteratorConfiguration(roi_table="well_ROI_table"),
             ilastik_model=str(ilastik_model),
-            input_ROI_table="well_ROI_table",
-            output_label_name="test_label",
-            relabeling=True,
+            label_name="test_label",
+            level_path="0",
+            advanced_parameters=AdvancedIlastikParameters(
+                foreground_class=0,
+                threshold=0.5,
+                min_size=15,
+            ),
         )
 
 
@@ -126,13 +142,16 @@ def test_ilastik_pixel_classification_segmentation_task_2D_single_channel(
 
     ilastik_pixel_classification_segmentation(
         zarr_url=ome_zarr_2d_url,
-        level=1,
-        channel=IlastikChannel1InputModel(label="DAPI"),
-        channel2=IlastikChannel2InputModel(label=None),
+        channels=IlastikChannels(mode="label", identifiers=["DAPI"]),
+        iterator_configuration=IteratorConfiguration(roi_table="FOV_ROI_table"),
         ilastik_model=str(ilastik_model),
-        output_label_name="test_label",
-        output_ROI_table="test_ROI_table",
-        relabeling=True,
+        label_name="test_label",
+        level_path="1",
+        advanced_parameters=AdvancedIlastikParameters(
+            foreground_class=0,
+            threshold=0.5,
+            min_size=15,
+        ),
     )
 
     # Test failing of task if model was trained with one channel
@@ -140,10 +159,14 @@ def test_ilastik_pixel_classification_segmentation_task_2D_single_channel(
     with pytest.raises(ValueError):
         ilastik_pixel_classification_segmentation(
             zarr_url=ome_zarr_2d_url,
-            level=1,
-            channel=IlastikChannel1InputModel(label="DAPI"),
-            channel2=IlastikChannel2InputModel(label="ECadherin"),
+            channels=IlastikChannels(mode="label", identifiers=["DAPI", "ECadherin"]),
+            iterator_configuration=IteratorConfiguration(roi_table="FOV_ROI_table"),
             ilastik_model=str(ilastik_model),
-            output_label_name="test_label",
-            relabeling=True,
+            label_name="test_label",
+            level_path="1",
+            advanced_parameters=AdvancedIlastikParameters(
+                foreground_class=0,
+                threshold=0.5,
+                min_size=15,
+            ),
         )
