@@ -182,8 +182,5 @@
   ],
   "has_args_schemas": true,
   "args_schema_version": "pydantic_v2",
-  "authors": [
-    "Lorenzo Cerrone",
-    "Ruth Hornbachner"
-  ]
+  "authors": "Lorenzo Cerrone, Ruth Hornbachner"
 }
