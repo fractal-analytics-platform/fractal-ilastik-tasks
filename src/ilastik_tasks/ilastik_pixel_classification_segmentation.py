@@ -211,6 +211,7 @@ def ilastik_pixel_classification_segmentation(
     # Ilastik-related parameters
     ilastik_model: Optional[str] = None,
     advanced_parameters: AdvancedIlastikParameters = AdvancedIlastikParameters(),
+    write_roi_table: bool = True,
     overwrite: bool = True,
 ) -> None:
     """Run Ilastik Pixel Classification on a Zarr image.
@@ -233,6 +234,8 @@ def ilastik_pixel_classification_segmentation(
         ilastik_model: Path to the Ilastik model (e.g. `"somemodel.ilp"`).
         advanced_parameters (AdvancedIlastikParameters): Advanced parameters
             for Ilastik segmentation.
+        write_roi_table (bool): Whether to write a masking ROI table for the segmented
+            object. Defaults to True.
         overwrite (bool): Whether to overwrite an existing label image.
             Defaults to True.
     """
@@ -351,6 +354,15 @@ def ilastik_pixel_classification_segmentation(
         writer(label_img)
 
     logging.info(f"label {label_name} successfully created at {zarr_url}")
+
+    # Optionally, write a masking ROI table for the segmented objects
+    if write_roi_table:
+        logging.info(f"Writing masking ROI table for label {label_name}")
+        masking_table = ome_zarr.build_masking_roi_table(label_name)
+        ome_zarr.add_table(
+            f"{label_name}_ROI_table", masking_table, overwrite=overwrite
+        )
+
     return None
 
 
