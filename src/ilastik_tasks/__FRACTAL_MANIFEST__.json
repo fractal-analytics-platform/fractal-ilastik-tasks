@@ -163,6 +163,12 @@
             "title": "Advanced Parameters",
             "description": "Advanced parameters for Ilastik segmentation."
           },
+          "write_roi_table": {
+            "default": true,
+            "title": "Write Roi Table",
+            "type": "boolean",
+            "description": "Whether to write a masking ROI table for the segmented object. Defaults to True."
+          },
           "overwrite": {
             "default": true,
             "title": "Overwrite",
