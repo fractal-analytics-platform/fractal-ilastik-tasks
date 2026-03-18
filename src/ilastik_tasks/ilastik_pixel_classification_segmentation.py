@@ -34,15 +34,15 @@ from ilastik.applets.dataSelection.opDataSelection import (
 from ngio import open_ome_zarr_container
 from ngio.experimental.iterators import MaskedSegmentationIterator, SegmentationIterator
 from ngio.images._masked_image import MaskedImage
-from pydantic import validate_call
+from pydantic import Field, validate_call
 from skimage.measure import label, regionprops
 from skimage.morphology import remove_small_holes
 
 from ilastik_tasks.ilastik_utils import (
     AdvancedIlastikParameters,
     IlastikChannels,
-    IteratorConfiguration,
-    MaskingConfiguration,
+    IteratorConfig,
+    MaskingConfig,
     get_expected_number_of_channels,
 )
 
@@ -169,14 +169,14 @@ def setup_ilastik_with_retries(ilastik_model: str):
 
 def load_masked_image(
     ome_zarr,
-    masking_configuration: MaskingConfiguration,
+    masking_configuration: MaskingConfig,
     level_path: Optional[str] = None,
 ) -> MaskedImage:
     """Load a masked image from an OME-Zarr based on the masking configuration.
 
     Args:
         ome_zarr: The OME-Zarr container.
-        masking_configuration (MaskingConfiguration): Configuration for masking.
+        masking_configuration (MaskingConfig): Configuration for masking.
         level_path (Optional[str]): Optional path to a specific resolution level.
 
     """
@@ -204,13 +204,15 @@ def ilastik_pixel_classification_segmentation(
     zarr_url: str,
     # Segmentation parameters
     channels: IlastikChannels,
-    label_name: Optional[str] = None,
-    level_path: Optional[str] = None,
+    label_name: str | None = None,
+    level_path: str | None = None,
     # Iteration parameters
-    iterator_configuration: Optional[IteratorConfiguration] = None,
+    iterator_configuration: IteratorConfig | None = None,
     # Ilastik-related parameters
-    ilastik_model: Optional[str] = None,
-    advanced_parameters: AdvancedIlastikParameters = AdvancedIlastikParameters(),
+    ilastik_model: str,
+    advanced_parameters: AdvancedIlastikParameters = Field(
+        default_factory=AdvancedIlastikParameters,
+    ),
     write_roi_table: bool = True,
     overwrite: bool = True,
 ) -> None:
@@ -228,7 +230,7 @@ def ilastik_pixel_classification_segmentation(
         level_path (Optional[str]): If the OME-Zarr has multiple resolution levels,
             the level to use can be specified here. If not provided, the highest
             resolution level will be used.
-        iterator_configuration (Optional[IteratorConfiguration]): Configuration
+        iterator_configuration (Optional[IteratorConfig]): Configuration
             for the segmentation iterator. This can be used to specify masking
             and/or a ROI table.
         ilastik_model: Path to the Ilastik model (e.g. `"somemodel.ilp"`).
@@ -279,7 +281,7 @@ def ilastik_pixel_classification_segmentation(
     logging.info(f"Output label image: {label=}")
 
     if iterator_configuration is None:
-        iterator_configuration = IteratorConfiguration()
+        iterator_configuration = IteratorConfig()
 
     # Determine if we are doing 3D segmentation
     if ome_zarr.is_3d:

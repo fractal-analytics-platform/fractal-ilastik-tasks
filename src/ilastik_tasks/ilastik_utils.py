@@ -5,7 +5,7 @@ https://github.com/fractal-analytics-platform/fractal-cellpose-sam-task/blob/mai
 """
 
 import logging
-from typing import Literal, Optional
+from typing import Literal
 
 from ngio import ChannelSelectionModel
 from pydantic import BaseModel, Field
@@ -13,57 +13,58 @@ from pydantic import BaseModel, Field
 logger = logging.getLogger(__name__)
 
 
-class MaskingConfiguration(BaseModel):
-    """Masking configuration.
-
-    Args:
-        mode (Literal["Table Name", "Label Name"]): Mode of masking to be applied.
-            If "Table Name", the identifier refers to a masking table name.
-            If "Label Name", the identifier refers to a label image name.
-        identifier (str): Name of the masking table or label image
-            depending on the mode.
-    """
+class MaskingConfig(BaseModel):
+    """Masking configuration."""
 
     mode: Literal["Table Name", "Label Name"] = "Table Name"
-    identifier: Optional[str] = None
-
-
-class IteratorConfiguration(BaseModel):
-    """Advanced Masking configuration.
-
-    Args:
-        masking (Optional[MaskingIterator]): If set, the segmentation will be
-            performed only within the confines of the specified mask. A mask can be
-            specified either by a label image or a Masking ROI table.
-        roi_table (Optional[str]): Name of a ROI table. If set, the segmentation
-            will be applied to each ROI in the table individually. This option can
-            be combined with masking.
+    """
+    Mode of masking to be applied.
+        - If "Table Name", the identifier refers to a masking table name.
+        - If "Label Name", the identifier refers to a label image name.
+    """
+    identifier: str | None = None
+    """
+    Name of the masking table or label image depending on the mode.
     """
 
-    masking: Optional[MaskingConfiguration] = Field(
+
+class IteratorConfig(BaseModel):
+    """Advanced iterator configuration."""
+
+    masking: MaskingConfig | None = Field(
         default=None, title="Masking Iterator Configuration"
     )
-    roi_table: Optional[str] = Field(default=None, title="Iterate Over ROIs")
+    """
+    If set, the segmentation will be performed only within the confines of
+    the specified mask. A mask can be specified either by a label image or a
+    Masking ROI table.
+    """
+    roi_table: str | None = Field(default=None, title="Iterate Over ROIs")
+    """
+    Name of a ROI table. If set, the segmentation will be applied to each ROI
+    in the table individually. This option can be combined with masking.
+    """
+
 
 
 class IlastikChannels(BaseModel):
     """Ilastik channels configuration.
 
-    Args:
-        This model is used to select a channel by label, wavelength ID, or index.
-
-    Args:
-        identifiers (str): Unique identifier for the channel.
-            This can be a channel label, wavelength ID, or index.
-        mode (Literal["label", "wavelength_id", "index"]): Specifies how to
-            interpret the identifier. Can be "label", "wavelength_id", or
-            "index" (must be an integer). At least one and at most three
-            identifiers must be provided.
+    This model is used to select a channel by label, wavelength ID, or index.
 
     """
 
     mode: Literal["label", "wavelength_id", "index"] = "label"
-    identifiers: list[str] = Field(default_factory=list, min_length=1, max_length=3)
+    """
+    Specifies how to interpret the identifiers. Can be "label", "wavelength_id", or
+    "index" (must be an integer).
+    """
+    identifiers: list[str] = Field(min_length=1, max_length=3)
+    """
+    Unique identifiers for the channels. This can be channel labels, wavelength IDs, or
+    indices, depending on the mode.
+    At least one and at most three identifiers must be provided.
+    """
 
     def to_list(self) -> list[ChannelSelectionModel]:
         """Convert to list of ChannelSelectionModel.
@@ -92,8 +93,18 @@ class AdvancedIlastikParameters(BaseModel):
     """
 
     foreground_class: int = 0
+    """
+    Class to be considered as foreground during prediction thresholding.
+    """
     threshold: float = 0.0
+    """
+    All pixels with value above threshold kept for masks, decrease to find more and
+    larger masks.
+    """
     min_size: int = 15
+    """
+    All segmented objects below this size, in pixels, will be discarded.
+    """
 
 
 def get_expected_number_of_channels(shell) -> int:

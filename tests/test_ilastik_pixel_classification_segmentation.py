@@ -10,7 +10,7 @@ from ilastik_tasks.ilastik_pixel_classification_segmentation import (
 from ilastik_tasks.ilastik_utils import (
     AdvancedIlastikParameters,
     IlastikChannels,
-    IteratorConfiguration,
+    IteratorConfig,
 )
 
 
@@ -41,7 +41,7 @@ def test_ilastik_pixel_classification_segmentation_task_3D_dual_channel(
     ilastik_pixel_classification_segmentation(
         zarr_url=ome_zarr_3d_url,
         channels=IlastikChannels(mode="label", identifiers=["DAPI_2", "ECadherin_2"]),
-        iterator_configuration=IteratorConfiguration(roi_table="FOV_ROI_table"),
+        iterator_configuration=IteratorConfig(roi_table="FOV_ROI_table"),
         ilastik_model=str(ilastik_model),
         label_name="test_label",
         level_path="0",
@@ -58,7 +58,7 @@ def test_ilastik_pixel_classification_segmentation_task_3D_dual_channel(
         ilastik_pixel_classification_segmentation(
             zarr_url=ome_zarr_3d_url,
             channels=IlastikChannels(mode="label", identifiers=["DAPI_2"]),
-            iterator_configuration=IteratorConfiguration(roi_table="FOV_ROI_table"),
+            iterator_configuration=IteratorConfig(roi_table="FOV_ROI_table"),
             ilastik_model=str(ilastik_model),
             label_name="test_label",
             level_path="0",
@@ -84,7 +84,7 @@ def test_ilastik_pixel_classification_segmentation_task_3D_single_channel(
     ilastik_pixel_classification_segmentation(
         zarr_url=ome_zarr_3d_url,
         channels=IlastikChannels(mode="label", identifiers=["DAPI_2"]),
-        iterator_configuration=IteratorConfiguration(roi_table="well_ROI_table"),
+        iterator_configuration=IteratorConfig(roi_table="well_ROI_table"),
         ilastik_model=str(ilastik_model),
         label_name="test_label",
         level_path="0",
@@ -103,7 +103,7 @@ def test_ilastik_pixel_classification_segmentation_task_3D_single_channel(
             channels=IlastikChannels(
                 mode="label", identifiers=["DAPI_2", "ECadherin_2"]
             ),
-            iterator_configuration=IteratorConfiguration(roi_table="well_ROI_table"),
+            iterator_configuration=IteratorConfig(roi_table="well_ROI_table"),
             ilastik_model=str(ilastik_model),
             label_name="test_label",
             level_path="0",
@@ -143,7 +143,7 @@ def test_ilastik_pixel_classification_segmentation_task_2D_single_channel(
     ilastik_pixel_classification_segmentation(
         zarr_url=ome_zarr_2d_url,
         channels=IlastikChannels(mode="label", identifiers=["DAPI"]),
-        iterator_configuration=IteratorConfiguration(roi_table="FOV_ROI_table"),
+        iterator_configuration=IteratorConfig(roi_table="FOV_ROI_table"),
         ilastik_model=str(ilastik_model),
         label_name="test_label",
         level_path="1",
@@ -160,7 +160,7 @@ def test_ilastik_pixel_classification_segmentation_task_2D_single_channel(
         ilastik_pixel_classification_segmentation(
             zarr_url=ome_zarr_2d_url,
             channels=IlastikChannels(mode="label", identifiers=["DAPI", "ECadherin"]),
-            iterator_configuration=IteratorConfiguration(roi_table="FOV_ROI_table"),
+            iterator_configuration=IteratorConfig(roi_table="FOV_ROI_table"),
             ilastik_model=str(ilastik_model),
             label_name="test_label",
             level_path="1",
