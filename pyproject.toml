@@ -43,10 +43,10 @@ readme = "README.md"
 license = { text = "BSD-3-Clause" }
 authors = [{ name = "Lorenzo Cerrone", email = "lorenzo.cerrone@uzh.ch" }]
 
-# Required Python version and dependencies
+dependencies = ["fractal-task-tools ==0.4.0a8"]
 requires-python = ">=3.11"
-dependencies = []
 
+# Required Python version and dependencies
 # Optional dependencies (e.g. for `pip install -e ".[dev]"`, see
 # https://peps.python.org/pep-0621/#dependencies-optional-dependencies)
 [project.optional-dependencies]
@@ -113,12 +113,11 @@ default = { solve-group = "default" }
 dev = { features = ["dev"], solve-group = "default" }
 
 [tool.pixi.dependencies]
-pydantic = "==2.8.2"
 docstring_parser = "==0.15"
 ilastik-core = ">=1.4.2a1,<2"
 vigra = ">=1.12.1,<2"
 ngio = ">=0.4.6,<0.5"
-fractal-task-tools = ">=0.0.14"
+pydantic = ">=2.11.0,<2.13.0"
 
 [tool.pixi.tasks]
 install-pre-commit = { cmd = ["pre-commit", "install"] }
