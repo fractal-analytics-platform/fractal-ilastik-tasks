@@ -38,12 +38,12 @@ exclude = [
 [project]
 name = "ilastik-tasks"
 dynamic = ["version"]
-description = "Collection of Fractal task to run Headless ilastik workflows"
+description = "Collection of Fractal tasks to run Headless ilastik workflows"
 readme = "README.md"
 license = { text = "BSD-3-Clause" }
 authors = [{ name = "Lorenzo Cerrone", email = "lorenzo.cerrone@uzh.ch" }]
 
-dependencies = ["fractal-task-tools ==0.4.0a8"]
+dependencies = ["fractal-task-tools>=0.4.0,<0.5.0"]
 requires-python = ">=3.11"
 
 # Required Python version and dependencies
