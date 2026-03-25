@@ -15,8 +15,6 @@ packages = ["src/ilastik_tasks"]
 # Clean up the source distribution to avoid big tag.gz files
 [tool.hatch.build.targets.sdist]
 exclude = [
-    # Pixi lock excluded by default see https://github.com/fractal-analytics-platform/fractal-server/issues/2624
-    "pixi.lock",
     # Exclude tests from the source distribution
     "tests",
     # Exclude typically large files and directories that are not needed

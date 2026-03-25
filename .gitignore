@@ -116,6 +116,5 @@ ENV/
 !tests/data/test_mip_ome.zarr
 
 # pixi environments
-.pixi
 *.egg-info
 pixi.lock
