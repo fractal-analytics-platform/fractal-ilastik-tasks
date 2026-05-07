@@ -4613,10 +4613,10 @@ packages:
   timestamp: 1737018594922
 - pypi: ./
   name: ilastik-tasks
-  version: 0.3.6.dev3+g952d2560d
-  sha256: ef19261a1164cfdfe19aa625e6a66ae5fee9b22086194b1087db0e9b6899dc6b
+  version: 0.3.6.dev5+g9856be6ff
+  sha256: 2185213a612c3464ea361a0d83ca2404897da305886517e9173997af745e29f7
   requires_dist:
-  - fractal-task-tools==0.5.0
+  - fractal-task-tools>=0.5.0,<0.6.0
   - devtools ; extra == 'dev'
   - hatch ; extra == 'dev'
   - jsonschema ; extra == 'dev'
