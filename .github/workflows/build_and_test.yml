@@ -9,15 +9,14 @@ on:
   pull_request:
   workflow_dispatch:
   release:
-    types: [published]
-
+    types: [ published ]
 
 jobs:
   tests:
     strategy:
       matrix:
-        os: [ubuntu-22.04, macos-latest]
-        python-version: ["3.11", "3.12", "3.13"]
+        os: [ ubuntu-22.04, macos-latest ]
+        python-version: [ "3.11", "3.12", "3.13" ]
     name: "Core, Python ${{ matrix.python-version }}, ${{ matrix.os }}"
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
@@ -27,20 +26,22 @@ jobs:
         with:
           fetch-depth: 1
 
-      - uses: prefix-dev/setup-pixi@v0.8.9
+      - uses: prefix-dev/setup-pixi@v0.9.4
         with:
-          pixi-version: v0.50.2
+          # pixi-version: v0.50.2
+          cache: true
 
       - name: Check if manifest has changed
         run: pixi run fractal-manifest check --package ilastik-tasks
-        
+
       - name: Run tests
         run: pixi run -e dev pytest
-  
+
   deploy:
     name: Deploy
     needs: tests
-    if: success() && startsWith(github.ref, 'refs/tags/') && github.event_name != 'schedule'
+    if: success() && startsWith(github.ref, 'refs/tags/') && github.event_name !=
+      'schedule'
     runs-on: ubuntu-latest
 
     permissions:
@@ -75,4 +76,4 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
-          files: './dist/*'
+          files: "./dist/*"
