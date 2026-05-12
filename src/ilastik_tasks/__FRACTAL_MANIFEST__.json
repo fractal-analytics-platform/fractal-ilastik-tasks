@@ -76,14 +76,30 @@
             "description": "Advanced iterator configuration.",
             "properties": {
               "masking": {
-                "$ref": "#/$defs/MaskingConfig",
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/MaskingConfig"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
                 "description": "If set, the segmentation will be performed only within the confines of\nthe specified mask. A mask can be specified either by a label image or a\nMasking ROI table.",
                 "title": "Masking Iterator Configuration"
               },
               "roi_table": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
                 "description": "Name of a ROI table. If set, the segmentation will be applied to each ROI\nin the table individually. This option can be combined with masking.",
-                "title": "Iterate Over ROIs",
-                "type": "string"
+                "title": "Iterate Over ROIs"
               }
             },
             "title": "IteratorConfig",
@@ -103,9 +119,17 @@
                 "type": "string"
               },
               "identifier": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
                 "description": "Name of the masking table or label image depending on the mode.",
-                "title": "Identifier",
-                "type": "string"
+                "title": "Identifier"
               }
             },
             "title": "MaskingConfig",
@@ -125,17 +149,41 @@
             "description": "Channels to use for segmentation. It must contain between 1 and 3 channel identifiers."
           },
           "label_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
             "title": "Label Name",
-            "type": "string",
             "description": "Name of the resulting label image. If not provided, it will be set to \"<channel_identifier>_segmented\"."
           },
           "level_path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
             "title": "Level Path",
-            "type": "string",
             "description": "If the OME-Zarr has multiple resolution levels, the level to use can be specified here. If not provided, the highest resolution level will be used."
           },
           "iterator_configuration": {
-            "$ref": "#/$defs/IteratorConfig",
+            "anyOf": [
+              {
+                "$ref": "#/$defs/IteratorConfig"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
             "title": "Iterator Configuration",
             "description": "Configuration for the segmentation iterator. This can be used to specify masking and/or a ROI table."
           },
@@ -179,6 +227,6 @@
     }
   ],
   "has_args_schemas": true,
-  "args_schema_version": "pydantic_v2",
+  "args_schema_version": "fractal_schema_v1",
   "authors": "Lorenzo Cerrone, Ruth Hornbachner"
 }

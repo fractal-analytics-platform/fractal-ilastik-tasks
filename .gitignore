@@ -117,4 +117,5 @@ ENV/
 
 # pixi environments
 *.egg-info
-pixi.lock
+
+.pixi
