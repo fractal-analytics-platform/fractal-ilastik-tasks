@@ -175,15 +175,7 @@
             "description": "If the OME-Zarr has multiple resolution levels, the level to use can be specified here. If not provided, the highest resolution level will be used."
           },
           "iterator_configuration": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/IteratorConfig"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "default": null,
+            "$ref": "#/$defs/IteratorConfig",
             "title": "Iterator Configuration",
             "description": "Configuration for the segmentation iterator. This can be used to specify masking and/or a ROI table."
           },
@@ -218,6 +210,7 @@
         "required": [
           "zarr_url",
           "channels",
+          "iterator_configuration",
           "ilastik_model"
         ],
         "type": "object",
