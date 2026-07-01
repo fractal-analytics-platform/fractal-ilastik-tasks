@@ -207,7 +207,7 @@ def ilastik_pixel_classification_segmentation(
     label_name: str | None = None,
     level_path: str | None = None,
     # Iteration parameters
-    iterator_configuration: IteratorConfig | None = None,
+    iterator_configuration: IteratorConfig,
     # Ilastik-related parameters
     ilastik_model: str,
     advanced_parameters: AdvancedIlastikParameters = Field(

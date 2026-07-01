@@ -46,7 +46,6 @@ class IteratorConfig(BaseModel):
     """
 
 
-
 class IlastikChannels(BaseModel):
     """Ilastik channels configuration.
 
