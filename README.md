@@ -22,4 +22,15 @@ if you need to use the `dev` version of the package, you can run:
 pixi run -e dev python some_script.py
 ```
 
-.
+### Deploying on a Fractal server
+
+`ilastik-tasks` depends on `ilastik-core` and `vigra`, which are conda-only
+packages and are **not published on PyPI**. Because of this, the task must be
+collected on the Fractal server using the **Pixi** task-collection method,
+rather than the `pip`/local-whl method (the latter cannot resolve these
+dependencies and will fail at runtime, e.g. with `ModuleNotFoundError: No
+module named 'numpy'`).
+
+To install it, download the `.tar.gz` source archive (not the `.whl`) of the
+desired version from the [Releases page](https://github.com/fractal-analytics-platform/fractal-ilastik-tasks/releases),
+and use it as the input for the Pixi task collection on the Fractal server.
