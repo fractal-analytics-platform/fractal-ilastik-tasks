@@ -62,13 +62,10 @@ def _setup_ilastik_logging():
     """
     import ilastik.ilastik_logging.default_config as default_config
 
-    # Path(default_config.DEFAULT_LOGFILE_PATH).touch()
-    Path(default_config.SESSION_LOGFILE_PATH).touch()
+    Path(default_config.SESSION_LOGFILE_PATH).parent.mkdir(exist_ok=True,parents=True)
+    Path(default_config.DEFAULT_LOGFILE_PATH).parent.mkdir(exist_ok=True,parents=True)
 
-    default_config.init(
-        output_mode=default_config.OutputMode.CONSOLE,
-        logfile_path="/dev/null",
-    )
+    default_config.init(output_mode=default_config.OutputMode.CONSOLE)
 
     _logger_name = "lazyflow.operators.classifierOperators.OpBaseClassifierPredict"
     _logger = logging.getLogger(_logger_name)
@@ -180,22 +177,24 @@ def setup_ilastik_with_retries(ilastik_model: str):
     """
     max_retries = 5
     current_round = 0
+    latest_exception = None
     while current_round < max_retries:
         try:
             shell = setup_ilastik(ilastik_model)
             return shell
-        except FileNotFoundError:
+        except FileNotFoundError as e:
             current_round += 1
             logging.warning(
                 f"Ilastik initialization failed, retrying {current_round=}/"
-                f"{max_retries}"
+                f"{max_retries}. Original error: {e}"
             )
             sleep_time = 2 ** (current_round + 1)
             time.sleep(sleep_time)
+            latest_exception = e
 
     raise FileNotFoundError(
         f"Ilastik initialization failed for model {ilastik_model} after "
-        f"{max_retries} retries."
+        f"{max_retries} retries. Latest observed error: {latest_exception}"
     )
 
 
