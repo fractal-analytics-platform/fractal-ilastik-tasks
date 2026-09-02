@@ -47,8 +47,30 @@ from ilastik_tasks.ilastik_utils import (
 )
 
 
+def _setup_ilastik_logging():
+    """Changes to the default ilastik-logging configuration
+
+    Changes with respect to default configuration:
+    1. The default output mode for headless ilastik is `BOTH`, which leads
+       to duplicate logs being emitted in the fractal-task context. By moving to
+       the `CONSOLE` output mode, we get a single log.
+    2. A specific lazyflow logger is emitting DEBUG logs - which can be fixed by
+       explicitly setting its level to INFO.
+
+    More details: https://github.com/fractal-analytics-platform/fractal-ilastik-tasks/issues/21.
+    """
+    import ilastik.ilastik_logging.default_config as default_config
+
+    default_config.init(output_mode=default_config.OutputMode.CONSOLE)
+
+    _logger_name = "lazyflow.operators.classifierOperators.OpBaseClassifierPredict"
+    _logger = logging.getLogger(_logger_name)
+    _logger.setLevel(logging.INFO)
+
+
 def setup_ilastik(model_path: str):
     """Setup Ilastik headless shell."""
+    _setup_ilastik_logging()
     args, _ = app.parse_known_args(
         args=[
             "--headless",
@@ -56,7 +78,7 @@ def setup_ilastik(model_path: str):
             "--readonly",
         ]
     )
-    shell = app.main(args)
+    shell = app.main(args, init_logging=False)
     return shell
 
 
