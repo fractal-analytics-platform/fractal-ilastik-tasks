@@ -23,9 +23,11 @@ Ilastik adaptation by:
 import logging
 import os
 import time
+from pathlib import Path
 from typing import Optional
 
 import numpy as np
+import platformdirs
 import vigra
 from ilastik import app
 from ilastik.applets.dataSelection.opDataSelection import (
@@ -49,10 +51,13 @@ from ilastik_tasks.ilastik_utils import (
 
 def setup_ilastik(model_path: str):
     """Setup Ilastik headless shell."""
-    args = app.parse_args([])
-    args.headless = True
-    args.project = model_path
-    args.readonly = True
+    args, _ = app.parse_known_args(
+        args=[
+            "--headless",
+            f"--project={model_path}",
+            "--readonly",
+        ]
+    )
     shell = app.main(args)
     return shell
 
