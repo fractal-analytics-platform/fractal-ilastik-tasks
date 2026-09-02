@@ -62,9 +62,12 @@ def _setup_ilastik_logging():
     """
     import ilastik.ilastik_logging.default_config as default_config
 
-    Path(default_config.DEFAULT_LOGFILE_PATH).touch()
+    # Path(default_config.DEFAULT_LOGFILE_PATH).touch()
 
-    default_config.init(output_mode=default_config.OutputMode.CONSOLE)
+    default_config.init(
+        output_mode=default_config.OutputMode.CONSOLE,
+        logfile_path="/dev/null",
+    )
 
     _logger_name = "lazyflow.operators.classifierOperators.OpBaseClassifierPredict"
     _logger = logging.getLogger(_logger_name)
