@@ -62,8 +62,9 @@ def _setup_ilastik_logging():
     """
     import ilastik.ilastik_logging.default_config as default_config
 
+    # Note: It appears that this folder must exist, because the session logfile
+    # will always be created - even if it is not to be populated.
     Path(default_config.SESSION_LOGFILE_PATH).parent.mkdir(exist_ok=True,parents=True)
-    Path(default_config.DEFAULT_LOGFILE_PATH).parent.mkdir(exist_ok=True,parents=True)
 
     default_config.init(output_mode=default_config.OutputMode.CONSOLE)
 
