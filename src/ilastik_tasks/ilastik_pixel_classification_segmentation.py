@@ -23,11 +23,9 @@ Ilastik adaptation by:
 import logging
 import os
 import time
-from pathlib import Path
 from typing import Optional
 
 import numpy as np
-import platformdirs
 import vigra
 from ilastik import app
 from ilastik.applets.dataSelection.opDataSelection import (
