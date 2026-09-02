@@ -23,6 +23,7 @@ Ilastik adaptation by:
 import logging
 import os
 import time
+from pathlib import Path
 from typing import Optional
 
 import numpy as np
@@ -61,6 +62,7 @@ def _setup_ilastik_logging():
     """
     import ilastik.ilastik_logging.default_config as default_config
 
+    Path(default_config.DEFAULT_LOGFILE_PATH)
     default_config.init(output_mode=default_config.OutputMode.CONSOLE)
 
     _logger_name = "lazyflow.operators.classifierOperators.OpBaseClassifierPredict"
