@@ -23,6 +23,7 @@ Ilastik adaptation by:
 import logging
 import os
 import time
+from pathlib import Path
 from typing import Optional
 
 import numpy as np
@@ -47,13 +48,42 @@ from ilastik_tasks.ilastik_utils import (
 )
 
 
+def _setup_ilastik_logging():
+    """Changes to the default ilastik-logging configuration
+
+    Changes with respect to default configuration:
+    1. The default output mode for headless ilastik is `BOTH`, which leads
+       to duplicate logs being emitted in the fractal-task context. By moving to
+       the `CONSOLE` output mode, we get a single log.
+    2. A specific lazyflow logger is emitting DEBUG logs - which can be fixed by
+       explicitly setting its level to INFO.
+
+    More details: https://github.com/fractal-analytics-platform/fractal-ilastik-tasks/issues/21.
+    """
+    import ilastik.ilastik_logging.default_config as default_config
+
+    # Note: It appears that this folder must exist, because the session logfile
+    # will always be created - even if it is not to be populated.
+    Path(default_config.SESSION_LOGFILE_PATH).parent.mkdir(exist_ok=True,parents=True)
+
+    default_config.init(output_mode=default_config.OutputMode.CONSOLE)
+
+    _logger_name = "lazyflow.operators.classifierOperators.OpBaseClassifierPredict"
+    _logger = logging.getLogger(_logger_name)
+    _logger.setLevel(logging.INFO)
+
+
 def setup_ilastik(model_path: str):
     """Setup Ilastik headless shell."""
-    args = app.parse_args([])
-    args.headless = True
-    args.project = model_path
-    args.readonly = True
-    shell = app.main(args)
+    _setup_ilastik_logging()
+    args, _ = app.parse_known_args(
+        args=[
+            "--headless",
+            f"--project={model_path}",
+            "--readonly",
+        ]
+    )
+    shell = app.main(args, init_logging=False)
     return shell
 
 
@@ -148,22 +178,24 @@ def setup_ilastik_with_retries(ilastik_model: str):
     """
     max_retries = 5
     current_round = 0
+    latest_exception = None
     while current_round < max_retries:
         try:
             shell = setup_ilastik(ilastik_model)
             return shell
-        except FileNotFoundError:
+        except FileNotFoundError as e:
             current_round += 1
             logging.warning(
                 f"Ilastik initialization failed, retrying {current_round=}/"
-                f"{max_retries}"
+                f"{max_retries}. Original error: {e}"
             )
             sleep_time = 2 ** (current_round + 1)
             time.sleep(sleep_time)
+            latest_exception = e
 
     raise FileNotFoundError(
         f"Ilastik initialization failed for model {ilastik_model} after "
-        f"{max_retries} retries."
+        f"{max_retries} retries. Latest observed error: {latest_exception}"
     )
 
 
